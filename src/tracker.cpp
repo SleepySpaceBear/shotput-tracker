@@ -1,7 +1,4 @@
-#include<opencv2/opencv.hpp>
-#include<iostream>
-
+#include <wx/any.h>
 int main() {
-
 	return 0;
 }
