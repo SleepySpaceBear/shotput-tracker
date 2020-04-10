@@ -7,7 +7,7 @@ private:
 };
 
 bool Test::OnInit() {
-	UI *frame = new UI("Hello World", wxPoint(50, 50), wxSize(450, 340));
+	UI *frame = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
 	frame->Show(true);
 	return true;
 }
