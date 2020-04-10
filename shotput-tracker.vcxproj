@@ -94,7 +94,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(OPENCV_PATH)\include;$(WXWIDGETS_PATH)\include;$(WXWIDGETS_PATH)\lib\vc_x64_lib\mswu</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_PATH)\include;$(WXWIDGETS_PATH)\include;$(WXWIDGETS_PATH)\lib\vc_x64_lib\mswu;include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -131,7 +131,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(OPENCV_PATH)\include;$(WXWIDGETS_PATH)\include\;$(WXWIDGETS_PATH)\lib\vc_x64_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_PATH)\include;$(WXWIDGETS_PATH)\include\;$(WXWIDGETS_PATH)\lib\vc_x64_lib\mswu;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -143,6 +143,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\tracker.cpp" />
+    <ClCompile Include="src\ui.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ui.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
