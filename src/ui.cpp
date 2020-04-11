@@ -1,5 +1,7 @@
 #include "ui.hpp"
 
+#include "app.hpp"
+
 UI::UI(const wxString& title, const wxPoint& pos, const wxSize& size)
 	: wxFrame(NULL, wxID_ANY, title, pos, size) {
 	wxMenu *menuFile = new wxMenu;
