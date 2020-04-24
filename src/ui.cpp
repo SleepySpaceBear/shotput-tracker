@@ -1,6 +1,7 @@
 #include "ui.hpp"
 
 #include "app.hpp"
+#include "fileui.hpp"
 
 UI::UI(const wxString& title, const wxPoint& pos, const wxSize& size)
 	: wxFrame(NULL, wxID_ANY, title, pos, size) {
@@ -19,7 +20,8 @@ UI::UI(const wxString& title, const wxPoint& pos, const wxSize& size)
 }
 
 void UI::OnLoadVideo(wxCommandEvent& event) {
-
+	FileUI* fileUI = new FileUI("Select a video file", wxPoint(50, 50), wxSize(480, 360));
+	fileUI->Show(true);
 }
 
 void UI::OnAbout(wxCommandEvent & event) {

@@ -7,8 +7,6 @@
 */
 enum : int { EV_LOAD_VIDEO = 0, NUM_EVENTS };
 
-class App;
-
 class UI : public wxFrame {
 public:
 	UI(const wxString& title, const wxPoint& pos, const wxSize& size);

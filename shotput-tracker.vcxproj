@@ -143,9 +143,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\app.cpp" />
+    <ClCompile Include="src\fileui.cpp" />
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fileui.hpp" />
     <ClInclude Include="include\app.hpp" />
     <ClInclude Include="include\ui.hpp" />
   </ItemGroup>
