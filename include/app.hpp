@@ -8,7 +8,7 @@ public:
 	virtual bool OnInit() override;
 	virtual int OnExit() override;
 
-	void LoadVideo(std::string& path);
+	bool LoadVideo(std::string& path);
 private:
 };
 

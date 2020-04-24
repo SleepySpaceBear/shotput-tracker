@@ -12,8 +12,8 @@ int App::OnExit() {
 	return 0;
 }
 
-void App::LoadVideo(std::string& path) {
-
+bool App::LoadVideo(std::string& path) {
+	return false;
 }
 
 wxIMPLEMENT_APP(App);

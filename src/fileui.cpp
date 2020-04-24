@@ -17,9 +17,17 @@ void FileUI::OnFileSelection(wxFileCtrlEvent& event) {
 	
 	Close();
 	
-	wxGetApp().LoadVideo(path);
+	if (!wxGetApp().LoadVideo(path)) {
+		wxMessageBox("Could not load \"" + path + "\"",
+			"Error!", wxOK | wxICON_ERROR);
+	}
+}
+
+void FileUI::OnExit(wxCommandEvent& event) {
+	Close();
 }
 
 wxBEGIN_EVENT_TABLE(FileUI, wxFrame)
-EVT_FILECTRL_FILEACTIVATED(1, OnFileSelection)
+EVT_FILECTRL_FILEACTIVATED(1, FileUI::OnFileSelection)
+EVT_MENU(wxID_EXIT, FileUI::OnExit)
 wxEND_EVENT_TABLE();

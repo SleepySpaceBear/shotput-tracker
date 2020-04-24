@@ -11,7 +11,8 @@ private:
 	wxFileCtrl* m_fileSelector;
 
 	void OnFileSelection(wxFileCtrlEvent& event);
-	
+	void OnExit(wxCommandEvent& event);
+
 	wxDECLARE_EVENT_TABLE();
 };
 
