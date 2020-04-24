@@ -1,5 +1,5 @@
-#ifndef TRACKER_HPP
-#define TRACKER_HPP
+#ifndef APP_HPP
+#define APP_HPP
 
 #include "wx/app.h"
 
@@ -9,5 +9,7 @@ public:
 	virtual int OnExit() override;
 private:
 };
+
+wxDECLARE_APP(App);
 
 #endif
