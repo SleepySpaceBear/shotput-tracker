@@ -17,7 +17,7 @@ bool App::LoadVideo(std::string& path) {
 	m_video.open(path);
 
     // if not successful, exit program
-    if (!m_video.isOpened())
+    if (!m_video.isLoaded())
     {
         return false;
     }
@@ -25,7 +25,7 @@ bool App::LoadVideo(std::string& path) {
     return true;
 }
 
-cv::VideoCapture& App::GetVideo() {
+Video& App::GetVideo() {
 	return m_video;
 }
 

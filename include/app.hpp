@@ -1,8 +1,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include "video.hpp"
+
 #include "wx/app.h"
-#include "opencv2/opencv.hpp"
 
 /*
  * A class representing the entirety of the application.
@@ -20,10 +21,10 @@ public:
 	bool LoadVideo(std::string& path);
 
 	// public getter for the loaded video
-	cv::VideoCapture& GetVideo();
+	Video& GetVideo();
 private:
 	// the currently loaded video
-	cv::VideoCapture m_video;
+	Video m_video;
 };
 
 wxDECLARE_APP(App);

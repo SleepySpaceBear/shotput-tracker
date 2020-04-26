@@ -96,6 +96,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(OPENCV_PATH)\include;$(WXWIDGETS_PATH)\include;$(WXWIDGETS_PATH)\lib\vc_x64_lib\mswu;include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,11 +146,13 @@
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\fileui.cpp" />
     <ClCompile Include="src\ui.cpp" />
+    <ClCompile Include="src\video.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileui.hpp" />
     <ClInclude Include="include\app.hpp" />
     <ClInclude Include="include\ui.hpp" />
+    <ClInclude Include="include\video.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
