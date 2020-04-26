@@ -19,7 +19,7 @@ public:
 	// gets the frame in a format that can be processed by OpenCV
 	cv::Mat getProcFrame(int frameNum) const;
 	// returned whether this class currently holds a loaded video
-	bool isLoaded();
+	bool isLoaded() const;
 	// gets the width of the video
 	int getWidth() const;
 	// gets the height of the video

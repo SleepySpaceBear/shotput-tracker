@@ -45,7 +45,7 @@ cv::Mat Video::getProcFrame(int frameNum) const {
 	return cv::Mat(m_frames.at(frameNum));
 }
 
-bool Video::isLoaded() {
+bool Video::isLoaded() const {
 	return m_width != -1 && m_height != -1 && !m_frames.empty();
 }
 
