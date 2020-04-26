@@ -13,12 +13,12 @@ FileUI::FileUI(const wxString& title, const wxPoint& pos, const wxSize& size)
 }
 
 void FileUI::OnFileSelection(wxFileCtrlEvent& event) {
-	std::string path = m_fileSelector->GetFilename().ToStdString();
+	std::string path = m_fileSelector->GetPath().ToStdString();
 	
 	Close();
 	
 	if (!wxGetApp().LoadVideo(path)) {
-		wxMessageBox("Could not load \"" + path + "\"",
+		wxMessageBox("Could not load \"" + m_fileSelector->GetFilename().ToStdString() + "\"",
 			"Error!", wxOK | wxICON_ERROR);
 	}
 }
