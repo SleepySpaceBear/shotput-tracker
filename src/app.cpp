@@ -18,7 +18,7 @@ int App::OnExit() {
 	return 0;
 }
 
-bool App::LoadVideo(std::string pathVideo {
+bool App::LoadVideo(std::string pathVideo) {
 	//open the video file for reading
     VideoCapture cap(pathVideo);
 
@@ -37,7 +37,7 @@ bool App::LoadVideo(std::string pathVideo {
     //get the frames rate of the video
     double fps = cap.get(CAP_PROP_FPS);
     cout << "Frames per seconds : " << fps << endl;
-    int frames_per_second = 10;
+    //int frames_per_second = 10;
 
     //Create and initialize the VideoWriter object 
     VideoWriter lVideo("D:/MyVideo.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), 
