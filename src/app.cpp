@@ -40,7 +40,7 @@ bool App::LoadVideo(std::string pathVideo) {
     //int frames_per_second = 10;
 
     //Create and initialize the VideoWriter object 
-    VideoWriter lVideo("D:/MyVideo.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), 
+    VideoWriter lVideo(pathVideo, VideoWriter::fourcc('M', 'J', 'P', 'G'), 
                                                            fps, frame_size, true); 
     //If the VideoWriter object is not initialized successfully, exit the program                                                    
     if (lVideo.isOpened() == false) 
