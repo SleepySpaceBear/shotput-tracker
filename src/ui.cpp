@@ -19,9 +19,6 @@ UI::UI(const wxString& title, const wxPoint& pos, const wxSize& size)
 	SetMenuBar(menuBar);
 
 	m_pVideoView = new VideoView(this, &wxGetApp().GetVideo());
-	//wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	//sizer->Add(m_pVideoView, 1, wxEXPAND);
-	//SetSizer(sizer);
 	wxGetApp().SetTopWindow(this);
 }
 
