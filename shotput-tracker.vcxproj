@@ -144,10 +144,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\videoview.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\fileui.cpp" />
     <ClCompile Include="src\ui.cpp" />
     <ClCompile Include="src\video.cpp" />
+    <ClCompile Include="src\videoview.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileui.hpp" />

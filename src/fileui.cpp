@@ -1,5 +1,7 @@
 #include "fileui.hpp"
 
+#include "videoview.hpp"
+#include "wx/wx.h"
 #include "app.hpp"
 
 FileUI::FileUI(const wxString& title, const wxPoint& pos, const wxSize& size)

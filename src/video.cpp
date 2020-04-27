@@ -4,7 +4,7 @@ bool Video::open(std::string& path) {
 	// clear frames 
 	m_frames.clear();
 
-	cv::VideoCapture cap(path);
+	cv::VideoCapture cap(path, cv::CAP_FFMPEG);
 	
 	if (!cap.isOpened()) {
 		return false;
@@ -12,11 +12,12 @@ bool Video::open(std::string& path) {
 
 	m_width = cap.get(cv::CAP_PROP_FRAME_WIDTH);
 	m_height = cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+	m_framerate = cap.get(cv::CAP_PROP_FPS);
 
 	cv::Mat mat;
 
 	while (cap.read(mat)) {
-		m_frames.push_back(mat);
+		m_frames.emplace_back(mat.clone());
 	}
 
 	return !m_frames.empty();
@@ -26,7 +27,7 @@ int Video::getNumFrames() const {
 	return m_frames.size();
 }
 
-wxImage Video::getDisplayFrame(int frameNum) const {
+wxBitmap Video::getDisplayFrame(int frameNum) const {
 	int numPixels = m_width * m_height;
 	
 	// allocate data for the image
@@ -38,7 +39,12 @@ wxImage Video::getDisplayFrame(int frameNum) const {
 		std::swap(data[i * 3], data[i * 3 + 2]);
 	}
 
-	return wxImage(m_width, m_height, data);
+	wxImage image(m_width, m_height, data, true);
+	wxBitmap bitmap(image);
+	
+	free(data);
+	
+	return bitmap;
 }
 
 cv::Mat Video::getProcFrame(int frameNum) const {
@@ -55,4 +61,8 @@ int Video::getWidth() const {
 
 int Video::getHeight() const {
 	return m_height;
+}
+
+double Video::getFramerate() const {
+	return m_framerate;
 }

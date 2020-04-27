@@ -1,6 +1,8 @@
 #ifndef UI_HPP
 #define UI_HPP
+
 #include "wx/wx.h"
+#include "videoview.hpp"
 
 /*
  * Unscoped enum for UI events 
@@ -16,12 +18,16 @@ public:
 	// Public constructor
 	UI(const wxString& title, const wxPoint& pos, const wxSize& size);
 private:
+	VideoView* m_pVideoView;
+
 	// callback function for selecting the "Load Video" menu option
 	void OnLoadVideo(wxCommandEvent& event);
 	// callback function for selecting the "About" menu option
 	void OnAbout(wxCommandEvent& event);
 	// callback function for closing the window
 	void OnExit(wxCommandEvent& event);
+	// callback function for idling
+	void OnIdle(wxIdleEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

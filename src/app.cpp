@@ -3,13 +3,17 @@
 #include "ui.hpp"
 
 bool App::OnInit() {
-	UI *frame = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
-	frame->Show(true);
+	m_ui = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
+	m_ui->Show(true);
 	return true;
 }
 
 int App::OnExit() {
 	return 0;
+}
+
+void App::OnIdle(wxIdleEvent& event) {
+	event.RequestMore();
 }
 
 bool App::LoadVideo(std::string& path) {
@@ -28,5 +32,9 @@ bool App::LoadVideo(std::string& path) {
 Video& App::GetVideo() {
 	return m_video;
 }
+
+wxBEGIN_EVENT_TABLE(App, wxApp)
+EVT_IDLE(App::OnIdle)
+wxEND_EVENT_TABLE();
 
 wxIMPLEMENT_APP(App);
