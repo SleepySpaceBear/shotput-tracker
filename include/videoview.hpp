@@ -21,11 +21,15 @@ private:
 	// callback function for paint event
 	void onPaint(wxPaintEvent& event);
 
-	// callbakc function for idling
+	// callback function for idling
 	void onIdle(wxIdleEvent& event);
 
-	// implementation of drawFrame
-	void _drawFrame(wxDC& dc);
+	// updates the current frame
+	// should be called after staleFrame returns true
+	void updateCurFrame();
+
+	// draws the current frame
+	void drawFrame(wxDC& dc);
 
 	// returns whether the current frame is "stale"
 	bool staleFrame() const;

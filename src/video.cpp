@@ -32,11 +32,11 @@ wxBitmap Video::getDisplayFrame(int frameNum) const {
 	
 	// allocate data for the image
 	unsigned char* data = (unsigned char*) malloc(numPixels * 3);
-	memcpy(data, m_frames.at(frameNum).data, numPixels * 3);
 	
-	// convert from BGR to RGB
 	for (int i = 0; i < numPixels; i++) {
-		std::swap(data[i * 3], data[i * 3 + 2]);
+		data[3 * i] = m_frames.at(frameNum).data[3 * i + 2];
+		data[3 * i + 1] = m_frames.at(frameNum).data[3 * i + 1];
+		data[3 * i + 2] = m_frames.at(frameNum).data[3 * i];
 	}
 
 	wxImage image(m_width, m_height, data, true);

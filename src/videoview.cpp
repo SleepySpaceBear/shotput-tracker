@@ -9,34 +9,40 @@ VideoView::VideoView(wxWindow* parent, Video* video) :
 
 void VideoView::onPaint(wxPaintEvent & event) {
 	wxPaintDC dc(this);
-	_drawFrame(dc);
+	
+	if (staleFrame()) {
+		updateCurFrame();
+	}
+	
+	drawFrame(dc);
 }
 
 void VideoView::onIdle(wxIdleEvent& event) {
 	if (staleFrame()) {
 		wxClientDC dc(this);
-		_drawFrame(dc);
+		updateCurFrame();
+		drawFrame(dc);
 	}
 }
 
-void VideoView::_drawFrame(wxDC & dc) {
+void VideoView::updateCurFrame() {
+
+	m_lastFrameTime = wxGetLocalTimeMillis();
+	m_curFrameNum++;
+
+	if (m_pVideo->getNumFrames() <= m_curFrameNum) {
+		m_curFrameNum = 0;
+	}
+
+	m_curFrame = m_pVideo->getDisplayFrame(m_curFrameNum);
+}
+
+void VideoView::drawFrame(wxDC & dc) {
 	if (m_pVideo->isLoaded()) {
 		PrepareDC(dc);
 		// make sure the panel is the right size
 		SetSize(m_curFrame.GetWidth(), m_curFrame.GetHeight());
 		SetVirtualSize(m_curFrame.GetWidth(), m_curFrame.GetHeight());
-
-		// check if we need to draw the next frame
-		if (staleFrame()) {
-			m_lastFrameTime = wxGetLocalTimeMillis();
-			m_curFrameNum++;
-
-			if (m_pVideo->getNumFrames() <= m_curFrameNum) {
-				m_curFrameNum = 0;
-			}
-
-			m_curFrame = m_pVideo->getDisplayFrame(m_curFrameNum);
-		}
 		
 		if (dc.CanDrawBitmap()) {
 			dc.DrawBitmap(m_curFrame, 0, 0);
