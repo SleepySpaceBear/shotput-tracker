@@ -24,18 +24,22 @@ void Tracker::processVideo() {
 }
 
 void Tracker::processFrame() {
+	using namespace std::chrono_literals; // for using ms
+
 	Video::Frame& frame = m_video->getFrame();
 	{
 		std::unique_lock<std::mutex> lk{ frame.mutStateChange };
 
 		// wait for the current frame to be ready for processing
 		if (frame.state != Video::FrameState::UNPROCESSED) {
-			frame.cvStateChange.wait(lk, [&frame] { return frame.state == Video::FrameState::UNPROCESSED; });
+			frame.cvStateChange.wait_for(lk, 100ms, [&frame, this] { return frame.state == Video::FrameState::UNPROCESSED; });
 		}
 
-		_processFrame(frame.mat);
-		m_prevFrame = frame.mat.clone();
-		frame.state = Video::FrameState::PROCESSED;
+		if (frame.state == Video::FrameState::UNPROCESSED) {
+			_processFrame(frame.mat);
+			m_prevFrame = frame.mat.clone();
+			frame.state = Video::FrameState::PROCESSED;
+		}
 	}
 	frame.cvStateChange.notify_all();
 }
