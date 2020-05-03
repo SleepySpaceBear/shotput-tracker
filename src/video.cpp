@@ -7,7 +7,7 @@ Video::Video() {
 }
 
 Video::~Video() {
-	m_alive = false;
+	m_alive.store(false);
 	m_threadFrameConverter.join();
 }
 

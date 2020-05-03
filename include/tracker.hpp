@@ -16,7 +16,7 @@ private:
 	std::thread m_threadFrameProcessor;
 	Video* m_video = NULL;
 	cv::Mat m_prevFrame;
-	bool m_alive = true;
+	std::atomic<bool> m_alive = true;
 
 	// function for processing the video
 	void processVideo();

@@ -5,7 +5,7 @@ Tracker::Tracker() {
 }
 
 Tracker::~Tracker() {
-	m_alive = false;
+	m_alive.store(false);
 	m_threadFrameProcessor.join();
 }
 
