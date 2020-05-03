@@ -149,9 +149,11 @@
     </ClInclude>
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\fileui.cpp" />
+    <ClCompile Include="src\tracker.cpp" />
     <ClCompile Include="src\ui.cpp" />
     <ClCompile Include="src\video.cpp" />
     <ClCompile Include="src\videoview.cpp" />
+    <ClInclude Include="tracker.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileui.hpp" />

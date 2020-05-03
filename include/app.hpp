@@ -2,6 +2,7 @@
 #define APP_HPP
 
 #include "ui.hpp"
+#include "tracker.hpp"
 #include "video.hpp"
 
 #include "wx/app.h"
@@ -13,6 +14,8 @@
  */
 class App : public wxApp {
 public:
+	App() = default;
+	~App() = default;
 
 	virtual bool OnInit() override;
 	virtual int OnExit() override;
@@ -29,8 +32,12 @@ public:
 private:
 	// the UI
 	UI* m_ui;
+	
 	// the currently loaded video
 	Video m_video;
+	
+	// the tracker
+	Tracker m_tracker;
 
 	wxDECLARE_EVENT_TABLE();
 };

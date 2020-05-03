@@ -5,6 +5,7 @@
 bool App::OnInit() {
 	m_ui = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
 	m_ui->Show(true);
+	m_tracker.setVideo(&m_video);
 	return true;
 }
 
