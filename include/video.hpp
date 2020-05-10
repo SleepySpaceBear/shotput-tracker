@@ -3,68 +3,50 @@
 
 #include <atomic>
 #include <vector>
-#include <memory>
 #include <thread>
 #include "wx/bitmap.h"
 #include "opencv2/opencv.hpp"
 
 
-class Video {
+class VideoBuffer {
 public:
-	enum class FrameState {
-		NOFRAME = -1,
-		UNPROCESSED = 0,
-		PROCESSED,
-		CONVERTED
-	};
+	VideoBuffer() = default;
+	~VideoBuffer() = default;
+	
+	// setters
+	
+	// sets video width
+	void setWidth(int width);
+	// sets video height
+	void setHeight(int height);
+	// sets video framerate
+	void setFramerate(double framerate);
 
-	struct Frame {
-		mutable std::mutex mutStateChange;
-		mutable std::condition_variable cvStateChange;
-		cv::Mat mat;
-		std::atomic<FrameState> state = FrameState::NOFRAME;
-	};
+	// adds a frame to the video
+	void addFrame(const wxBitmap& bitmap);
 
-	Video();
-	~Video();
-
-	// opens the file at the given path
-	bool open(std::string& path);
+	// getters
 
 	// returns the number of frames in the video
 	int getNumFrames() const;
-	// gets a frame in a format that can be displayed wxWidgets
-	wxBitmap getDisplayFrame(int frameNum) const;
-	// gets the frame in a format that can be processed by OpenCV
-	Frame& getFrame();
-	// returned whether this class currently holds a loaded video
-	bool isLoaded() const;
+	// gets the next available frame
+	wxBitmap getNextFrame() const;
 	// gets the width of the video
 	int getWidth() const;
 	// gets the height of the video
 	int getHeight() const;
 	// gets the framerate of the video
 	double getFramerate() const;
+	// gets whether there is a another frame
+	bool hasNextFrame() const;
 
 private:
-	cv::VideoCapture m_vidCapture;
-	std::vector<wxBitmap> m_vecBitmaps;
-	std::thread m_threadFrameConverter;
-	Frame m_curFrame;
+	mutable std::vector<wxBitmap> m_vecFrames;
+	mutable std::mutex m_mutAccess;
 
-	double m_dFramerate;
-	int m_nHeight = -1;
-	int m_nWidth = -1;
-	std::atomic<bool> m_alive = true;
-
-	// function for doing the behind the scenes work
-	void work();
-	void loadFrame();
-	void convertFrame();
-};
-
-class VideoProcessor {
-
+	std::atomic<double> m_dFramerate = 0;
+	std::atomic<int> m_nHeight = -1;
+	std::atomic<int> m_nWidth = -1;
 };
 
 #endif

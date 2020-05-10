@@ -2,7 +2,7 @@
 
 #include "wx/time.h"
 
-VideoView::VideoView(wxWindow* parent, Video* video) : 
+VideoView::VideoView(wxWindow* parent, VideoBuffer* video) : 
 	wxPanel(parent, wxID_ANY, wxDefaultPosition, { video->getWidth(), video->getHeight() }), m_pVideo(video) {
 }
 
@@ -26,27 +26,20 @@ void VideoView::onIdle(wxIdleEvent& event) {
 }
 
 void VideoView::updateCurFrame() {
-
-	m_lastFrameTime = wxGetLocalTimeMillis();
-	m_curFrameNum++;
-
-	if (m_pVideo->getNumFrames() <= m_curFrameNum) {
-		m_curFrameNum = 0;
+	if (m_pVideo->hasNextFrame()) {
+		m_curFrame = m_pVideo->getNextFrame();
+		m_lastFrameTime = wxGetLocalTimeMillis();
 	}
-
-	m_curFrame = m_pVideo->getDisplayFrame(m_curFrameNum);
 }
 
 void VideoView::drawFrame(wxDC & dc) {
-	if (m_pVideo->isLoaded()) {
-		PrepareDC(dc);
-		// make sure the panel is the right size
-		SetSize(m_curFrame.GetWidth(), m_curFrame.GetHeight());
-		SetVirtualSize(m_curFrame.GetWidth(), m_curFrame.GetHeight());
-		
-		if (dc.CanDrawBitmap()) {
-			dc.DrawBitmap(m_curFrame, 0, 0);
-		}
+	PrepareDC(dc);
+	// make sure the panel is the right size
+	SetSize(m_curFrame.GetWidth(), m_curFrame.GetHeight());
+	SetVirtualSize(m_curFrame.GetWidth(), m_curFrame.GetHeight());
+
+	if (dc.CanDrawBitmap() && m_curFrame.IsOk()) {
+		dc.DrawBitmap(m_curFrame, 0, 0);
 	}
 }
 

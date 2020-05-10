@@ -1,6 +1,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include <atomic>
+#include <thread>
+
 #include "ui.hpp"
 #include "tracker.hpp"
 #include "video.hpp"
@@ -27,17 +30,32 @@ public:
 	// returns true if successful and false otherwise
 	bool LoadVideo(std::string& path);
 
-	// public getter for the loaded video
-	Video& GetVideo();
+	// public getter for the video buffer
+	VideoBuffer& GetVideoBuffer();
 private:
 	// the UI
 	UI* m_ui;
 	
-	// the currently loaded video
-	Video m_video;
+	// the processed video
+	VideoBuffer m_video;
+
+	// the video capture
+	cv::VideoCapture m_vidCapture;
 	
 	// the tracker
 	Tracker m_tracker;
+
+	// worker thread
+	std::thread m_threadWorker;
+
+	// signal for m_threadWorker to remain alive
+	std::atomic<bool> m_alive;
+	
+	// function for m_threadWorker
+	void work();
+
+	// converts cv::Mat to wxBitmap
+	wxBitmap matToBitmap(const cv::Mat& mat);
 
 	wxDECLARE_EVENT_TABLE();
 };

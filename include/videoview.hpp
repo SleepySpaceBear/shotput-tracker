@@ -6,11 +6,11 @@
 
 class VideoView : public wxPanel {
 public:
-	VideoView(wxWindow* parent, Video* video);
+	VideoView(wxWindow* parent, VideoBuffer* video);
 
 private:
 	// pointer to the video that this is drawing
-	Video* m_pVideo;
+	VideoBuffer* m_pVideo;
 	// the last time a frame was drawn
 	wxMilliClock_t m_lastFrameTime;
 	// the current frmae

@@ -18,7 +18,7 @@ UI::UI(const wxString& title, const wxPoint& pos, const wxSize& size)
 	menuBar->Append(menuHelp, "&Help");
 	SetMenuBar(menuBar);
 
-	m_pVideoView = new VideoView(this, &wxGetApp().GetVideo());
+	m_pVideoView = new VideoView(this, &wxGetApp().GetVideoBuffer());
 	wxGetApp().SetTopWindow(this);
 }
 
@@ -37,8 +37,8 @@ void UI::OnExit(wxCommandEvent & event) {
 }
 
 void UI::OnIdle(wxIdleEvent& event) {
-	Video& video = wxGetApp().GetVideo();
-	if (video.isLoaded()) {
+	VideoBuffer& video = wxGetApp().GetVideoBuffer();
+	if (video.hasNextFrame()) {
 		SetClientSize(video.getWidth(), video.getHeight());
 	}
 }

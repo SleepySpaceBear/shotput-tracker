@@ -8,24 +8,14 @@
 
 class Tracker {
 public:
-	Tracker();
-	~Tracker();
+	Tracker() = default;
+	~Tracker() = default;
 
-	void setVideo(Video* video);
+	// finds the shotput in the frame and edits it accordingly
+	void processFrame(cv::Mat& frame);
 private:
-	std::thread m_threadFrameProcessor;
-	Video* m_video = NULL;
+	// previous video frame
 	cv::Mat m_prevFrame;
-	std::atomic<bool> m_alive = true;
-
-	// function for processing the video
-	void processVideo();
-
-	// function for processing the current video frame
-	// essentially a wrapper for _processFrame
-	void processFrame();
-	// helper function for processFrame that actually does the OpenCV work
-	void _processFrame(cv::Mat& frame);
 };
 
 #endif
