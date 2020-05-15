@@ -44,7 +44,7 @@ void App::work() {
 			}
 		}
 		else {
-			std::this_thread::sleep_for(std::chrono::microseconds(100));
+			std::this_thread::sleep_for(std::chrono::milliseconds(2));
 		}
 	}
 }
@@ -56,15 +56,19 @@ wxBitmap App::matToBitmap(const cv::Mat& mat) {
 	// allocate data for the image
 	unsigned char* data = (unsigned char*) malloc(numPixels * 3);
 
+	int numBytes = numPixels * 3;
+
 	// convert from BGR to RGB
-	for (int i = 0; i < numPixels; i++) {
-		data[3 * i] = mat.data[3 * i + 2];
-		data[3 * i + 1] = mat.data[3 * i + 1];
-		data[3 * i + 2] = mat.data[3 * i];
+	for (int i = 0; i < numBytes; i += 3) {
+		data[i] = mat.data[i + 2];
+		data[i + 1] = mat.data[i + 1];
+		data[i + 2] = mat.data[i];
 	}
 
 	wxImage image(m_video.getWidth(), m_video.getHeight(), data, true);
-	return wxBitmap(image);
+	wxBitmap temp(image);
+	free(data);
+	return temp;
 }
 
 wxBEGIN_EVENT_TABLE(App, wxApp)
