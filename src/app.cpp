@@ -23,9 +23,8 @@ void App::OnIdle(wxIdleEvent& event) {
 }
 
 bool App::LoadVideo(std::string& path) {
+	std::unique_lock<std::mutex> lk{ m_mutVidCapture };
     bool temp = m_vidCapture.open(path);
-	m_video.setWidth(m_vidCapture.get(cv::CAP_PROP_FRAME_WIDTH));
-	m_video.setHeight(m_vidCapture.get(cv::CAP_PROP_FRAME_HEIGHT));
 	m_video.setFramerate(m_vidCapture.get(cv::CAP_PROP_FPS));
 	return temp;
 }
@@ -36,6 +35,7 @@ VideoBuffer& App::GetVideoBuffer() {
 
 void App::work() {
 	while (m_alive.load()) {
+		std::unique_lock<std::mutex> lk{ m_mutVidCapture };
 		if (m_vidCapture.isOpened()) {
 			cv::Mat frame;
 			if (m_vidCapture.read(frame)) {
@@ -50,13 +50,10 @@ void App::work() {
 }
 
 wxBitmap App::matToBitmap(const cv::Mat& mat) {
-
-	int numPixels = m_video.getWidth() * m_video.getHeight();
+	const int numBytes = mat.rows * mat.cols * 3;
 
 	// allocate data for the image
-	unsigned char* data = (unsigned char*) malloc(numPixels * 3);
-
-	int numBytes = numPixels * 3;
+	unsigned char* data = (unsigned char*) malloc(numBytes);
 
 	// convert from BGR to RGB
 	for (int i = 0; i < numBytes; i += 3) {

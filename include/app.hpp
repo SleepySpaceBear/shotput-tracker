@@ -41,6 +41,7 @@ private:
 
 	// the video capture
 	cv::VideoCapture m_vidCapture;
+	std::mutex m_mutVidCapture;
 	
 	// the tracker
 	Tracker m_tracker;

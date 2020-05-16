@@ -144,6 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\fileui.hpp" />
+    <ClInclude Include="include\tracker.hpp" />
     <ClInclude Include="include\videoview.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -153,10 +155,8 @@
     <ClCompile Include="src\ui.cpp" />
     <ClCompile Include="src\video.cpp" />
     <ClCompile Include="src\videoview.cpp" />
-    <ClInclude Include="tracker.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fileui.hpp" />
     <ClInclude Include="include\app.hpp" />
     <ClInclude Include="include\ui.hpp" />
     <ClInclude Include="include\video.hpp" />
