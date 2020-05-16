@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\constants.hpp" />
     <ClInclude Include="include\fileui.hpp" />
     <ClInclude Include="include\tracker.hpp" />
     <ClInclude Include="include\videoview.hpp">

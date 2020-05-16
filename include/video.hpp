@@ -4,6 +4,7 @@
 #include <atomic>
 #include <vector>
 #include <thread>
+
 #include "wx/bitmap.h"
 #include "opencv2/opencv.hpp"
 
@@ -39,6 +40,7 @@ public:
 	double getFramerate() const;
 	// gets whether there is a another frame
 	bool hasNextFrame() const;
+
 	// clears the contents of the buffer
 	void clear();
 
