@@ -25,7 +25,12 @@ void App::OnIdle(wxIdleEvent& event) {
 bool App::LoadVideo(std::string& path) {
 	std::unique_lock<std::mutex> lk{ m_mutVidCapture };
     bool temp = m_vidCapture.open(path);
-	m_video.setFramerate(m_vidCapture.get(cv::CAP_PROP_FPS));
+	m_video.clear();
+	if (temp) {
+		m_video.setWidth(m_vidCapture.get(cv::CAP_PROP_FRAME_WIDTH));
+		m_video.setHeight(m_vidCapture.get(cv::CAP_PROP_FRAME_HEIGHT));
+		m_video.setFramerate(m_vidCapture.get(cv::CAP_PROP_FPS));
+	}
 	return temp;
 }
 

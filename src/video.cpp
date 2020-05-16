@@ -48,3 +48,11 @@ bool VideoBuffer::hasNextFrame() const {
 	std::unique_lock<std::mutex> lk{ m_mutAccess };
 	return !m_vecFrames.empty();
 }
+
+void VideoBuffer::clear() {
+	std::unique_lock<std::mutex> lk{ m_mutAccess };
+	m_vecFrames.clear();
+	m_dFramerate.store(0);
+	m_nHeight.store(-1);
+	m_nWidth.store(-1);
+}

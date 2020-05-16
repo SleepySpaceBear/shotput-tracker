@@ -39,6 +39,8 @@ public:
 	double getFramerate() const;
 	// gets whether there is a another frame
 	bool hasNextFrame() const;
+	// clears the contents of the buffer
+	void clear();
 
 private:
 	mutable std::vector<wxBitmap> m_vecFrames;
