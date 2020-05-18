@@ -144,12 +144,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\analyzer_0.h" />
     <ClInclude Include="include\constants.hpp" />
     <ClInclude Include="include\fileui.hpp" />
     <ClInclude Include="include\tracker.hpp" />
     <ClInclude Include="include\videoview.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClCompile Include="src\analyzer_0.cpp" />
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\fileui.cpp" />
     <ClCompile Include="src\tracker.cpp" />
