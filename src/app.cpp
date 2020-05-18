@@ -2,25 +2,40 @@
 
 #include "constants.hpp"
 #include "ui.hpp"
+#include <analyzer_0.h>
+
+// thread for the companion Analyzer
+// for now, it starts in App::OnInit(){}
+std::thread thread0;
 
 bool App::OnInit() {
-	m_ui = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
-	m_ui->Show(true);
+
+	// opens up the companion Analyzer
+	thread0 = std::thread(&Analyzer::foo, new Analyzer(), 5);
+
+
+	//m_ui = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
+	//m_ui->Show(true);
+
 
 	m_alive.store(true);
-	m_threadWorker = std::thread([this] { this->work(); });
+	m_threadWorker = std::thread([this] { this->work(); });;
+
 
 	return true;
 }
 
+
 int App::OnExit() {
 	m_alive.store(false);
 	m_threadWorker.join();
+	thread0.join();
 	return 0;
 }
 
 void App::OnIdle(wxIdleEvent& event) {
 	event.RequestMore();
+
 }
 
 bool App::LoadVideo(std::string& path) {
