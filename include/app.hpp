@@ -58,6 +58,8 @@ private:
 	// converts cv::Mat to wxBitmap
 	wxBitmap matToBitmap(const cv::Mat& mat);
 
+
+
 	wxDECLARE_EVENT_TABLE();
 };
 
