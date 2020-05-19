@@ -11,7 +11,7 @@ std::thread thread0;
 bool App::OnInit() {
 
 	// opens up the companion Analyzer
-	thread0 = std::thread(&Analyzer::foo, new Analyzer(), 5);
+	//thread0 = std::thread(&Analyzer::foo, new Analyzer(), 5);
 
 
 	//m_ui = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
