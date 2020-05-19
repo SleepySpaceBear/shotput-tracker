@@ -15,3 +15,9 @@
 	4. Go to the [install directory]/build/msw and open the .sln file corresponding to your version of Visual Studio (make sure you build in Release x64)
 	5. Build everything in the solution
 	6. Set the install directory as the environment variable "WXWIDGETS_PATH"
+
+## Solution:
+ *  'opencv_world420.dll not found'
+ 	1. Go to your OS search engine.
+	2. Search for opencv_world420.dll.
+	3. Copy the file to the release/debug folder under x64 folder inside the shotput-tracker folder.
