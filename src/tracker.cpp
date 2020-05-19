@@ -24,12 +24,14 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 	// get the greyscale frame
 	//cv::Mat greyscale;
 	//cv::cvtColor(frame, greyscale, cv::COLOR_BGR2GRAY);
+	cv::imshow("test", frame);
 
 	cv::Point loc{ -1, -1 };
+	//return loc;
 
 	cv::Mat result;
 
-	const int sample_counts = 24;
+	all_matched_locations locs;
 
 	const char* t0 = "templates\\0.png";
 	const char* t1 = "templates\\1.png";
@@ -57,7 +59,7 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 	const char* t23 = "templates\\23.png";
 
 
-	const char* templates[sample_counts];
+	const char* templates[SAMPLE_COUNTS];
 	int temp_count = 0;
 	templates[temp_count++] = t0;
 	templates[temp_count++] = t1;
@@ -84,8 +86,7 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 	templates[temp_count++] = t22;
 	templates[temp_count++] = t23;
 
-	all_matched_locations locs;
-	for (int i = 0; i < sample_counts; i++)
+	for (int i = 0; i < SAMPLE_COUNTS; i++)
 	{
 		if (1 == 1)
 			//if (i == 2 || i == 3)
@@ -163,7 +164,7 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 				{
 					int x_loc = matchLoc.x - template_image.cols + i,
 						y_loc = matchLoc.y - template_image.rows + j;
-					cv::Scalar color = frame.at<uchar>(y_loc, x_loc);
+					cv::Vec3b color = frame.at<cv::Vec3b>(cv::Point(x_loc, y_loc));
 					avg_b += color[0];
 					avg_g += color[1];
 					avg_r += color[2];
@@ -210,11 +211,43 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 
 
 		}
-		// sharp
-		imshow("hi", frame);
+		imshow("'frame' output", frame);
+		// debug windows created on a per template image basis
 		//imshow(std::to_string(i), frame);
 	}
 
+	// WE DONT NEED ANY LOCKS HERE IF EACH THREAD ONLY WRITES TO ITS OWN ARRAY LOCATION (i)
+
+
+	for (int i = 0; i < SAMPLE_COUNTS; i++)
+	{
+
+	}
+
+	// sees who has the most agree-ers
+	const int agree_boundary = 10; // in px, compares centers of detections
+
+	for (int i = 0; i < SAMPLE_COUNTS; i++)
+	{
+		int ourX = locs.location[i].x_center,
+			ourY = locs.location[i].y_center;
+
+		for (int j = 0; j < SAMPLE_COUNTS; j++)
+		{
+			// doesn't compare itself
+			if (j != i)
+			{
+				int compX = locs.location[j].x_center,
+					compY = locs.location[j].y_center;
+
+				if (abs(compX - ourX) < agree_boundary && abs(compY - ourY) < agree_boundary)
+				{
+					locs.location[j].agree_score += 1;
+				}
+
+			}
+		}
+	}
 
 
 	return loc;
