@@ -14,8 +14,8 @@ bool App::OnInit() {
 	//thread0 = std::thread(&Analyzer::foo, new Analyzer(), 5);
 
 
-	//m_ui = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
-	//m_ui->Show(true);
+	m_ui = new UI("Shotput Tracker", wxPoint(50, 50), wxSize(450, 340));
+	m_ui->Show(true);
 
 
 	m_alive.store(true);
