@@ -6,7 +6,7 @@
     1. Go to https://opencv.org/releases/
 	2. Download Windows release
     3. Extract it to a location of your choice
-	4. Set the [OpenCV directory]/build/install as the environment variable "OPENCV_PATH"
+	4. Set the [OpenCV directory]/build as the environment variable "OPENCV_PATH"
 * WxWidgets  
   Installation steps:
     1. Go to https://www.wxwidgets.org/downloads/
