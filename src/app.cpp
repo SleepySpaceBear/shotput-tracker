@@ -2,7 +2,6 @@
 
 #include "constants.hpp"
 #include "ui.hpp"
-#include <analyzer_0.h>
 
 // thread for the companion Analyzer
 // for now, it starts in App::OnInit(){}
