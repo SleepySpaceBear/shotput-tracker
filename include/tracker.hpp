@@ -12,6 +12,7 @@ public:
 
 	// finds the shotput in the frame and edits it accordingly
 	void processFrame(cv::Mat& frame);
+
 private:
 	const static int s_shotputSize = 20;
 
@@ -20,6 +21,25 @@ private:
 
 	cv::Point findShotput(cv::Mat& frame);
 	void drawCircle(const cv::Point& loc, cv::Mat& frame);
+
+
+
+	typedef struct matched_location
+	{
+		int has_changed = -1;
+		int detected_size = -1;
+		int x_center = -1;
+		int y_center = -1;
+		int prev_x_center = -1;
+		int prev_y_center = -1;
+		cv::Scalar average_center_color = cv::Scalar(-1, -1, -1);
+
+	}a_location;
+
+	struct all_matched_locations
+	{
+		a_location location[24];
+	};
 };
 
 #endif
