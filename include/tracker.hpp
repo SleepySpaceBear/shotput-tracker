@@ -1,6 +1,12 @@
 #ifndef TRACKER_HPP
 #define TRACKER_HPP
 
+// how many templates we have
+// allows this to be overrode
+#ifndef SAMPLE_COUNTS
+#define SAMPLE_COUNTS 24
+#endif
+
 #include <thread>
 
 #include "opencv2/opencv.hpp"
@@ -12,6 +18,7 @@ public:
 
 	// finds the shotput in the frame and edits it accordingly
 	void processFrame(cv::Mat& frame);
+
 
 private:
 	const static int s_shotputSize = 20;
@@ -33,12 +40,15 @@ private:
 		int prev_x_center = -1;
 		int prev_y_center = -1;
 		cv::Scalar average_center_color = cv::Scalar(-1, -1, -1);
+		// agree_score is the count of matching matched_locations nearby. The higher, the better
+		int agree_score = -1;
+		int plausible_color = -1;
 
 	}a_location;
 
 	struct all_matched_locations
 	{
-		a_location location[24];
+		a_location location[SAMPLE_COUNTS];
 	};
 };
 
