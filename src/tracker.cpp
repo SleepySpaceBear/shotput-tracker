@@ -34,13 +34,13 @@ double Tracker::getDistance() {
 	return 0.0;
 }
 
+
 cv::Point Tracker::findShotput(cv::Mat& frame) {
 	// get the greyscale frame
 	//cv::Mat greyscale;
 	//cv::cvtColor(frame, greyscale, cv::COLOR_BGR2GRAY);
-	cv::imshow("test", frame);
+	//cv::imshow("test", frame);
 
-	cv::Point loc{ -1, -1 };
 	//return loc;
 
 	cv::Mat result;
@@ -161,8 +161,8 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 				locs.location[i].has_changed = 1;
 
 			// update center
-			locs.location[i].prev_x_center = locs.location[i].prev_x_center;
-			locs.location[i].prev_y_center = locs.location[i].prev_y_center;
+			locs.location[i].prev_x_center = locs.location[i].x_center;
+			locs.location[i].prev_y_center = locs.location[i].y_center;
 			locs.location[i].x_center = matchLoc.x;
 			locs.location[i].y_center = matchLoc.y;
 
@@ -178,11 +178,6 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 				{
 					int x_loc = matchLoc.x - template_image.cols + i,
 						y_loc = matchLoc.y - template_image.rows + j;
-					
-					if (frame.cols <= x_loc || frame.rows <= y_loc) {
-						continue;
-					}
-
 					cv::Vec3b color = frame.at<cv::Vec3b>(cv::Point(x_loc, y_loc));
 					avg_b += color[0];
 					avg_g += color[1];
@@ -194,9 +189,8 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 			avg_b /= template_image.cols * template_image.rows;
 			avg_g /= template_image.cols * template_image.rows;
 			avg_r /= template_image.cols * template_image.rows;
-			locs.location[i].average_center_color[0] = avg_b;
-			locs.location[i].average_center_color[1] = avg_g;
-			locs.location[i].average_center_color[2] = avg_r;
+			locs.location[i].average_center_color = avg_b + avg_g + avg_r;
+			locs.location[i].detected_size = template_image.cols * template_image.rows;
 
 
 
@@ -214,7 +208,11 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 			int draw_box_width = 40;
 			if (i > 9)
 				draw_box_width *= 2;
-
+			
+			const int draw_debug_boxes = 0;
+			
+			if (draw_debug_boxes)
+			{
 			rectangle(frame,
 				cv::Point(matchLoc.x - 0 - x_offset, matchLoc.y - 45 - y_offset),
 				cv::Point(matchLoc.x + draw_box_width - x_offset, matchLoc.y + 5 - y_offset),
@@ -227,21 +225,53 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 				cv::HersheyFonts::FONT_HERSHEY_SIMPLEX,
 				2,
 				cv::Scalar(c0, c1, c2), 1);
+			}
 
 
 		}
-		imshow("'frame' output", frame);
+		//imshow("'frame' output", frame);
 		// debug windows created on a per template image basis
 		//imshow(std::to_string(i), frame);
 	}
 
 	// WE DONT NEED ANY LOCKS HERE IF EACH THREAD ONLY WRITES TO ITS OWN ARRAY LOCATION (i)
 
+	//  average color values calculated at https://matkl.github.io/average-color/
+	temp_count = 0;
+	locs.location[temp_count++].plausible_color = 135 + 134 + 117;
+	locs.location[temp_count++].plausible_color = 143 + 123 + 102;
+	locs.location[temp_count++].plausible_color = 189 + 138 + 128;
+	locs.location[temp_count++].plausible_color = 148 + 128 + 104;
+	locs.location[temp_count++].plausible_color = 131 + 114 + 95;
+	locs.location[temp_count++].plausible_color = 131 + 113 + 92;
+	locs.location[temp_count++].plausible_color = 138 + 119 + 96;
+	locs.location[temp_count++].plausible_color = 140 + 119 + 94;
+	locs.location[temp_count++].plausible_color = 161 + 136 + 106;
+	locs.location[temp_count++].plausible_color = 158 + 139 + 117;
+	locs.location[temp_count++].plausible_color = 139 + 120 + 97;
+	locs.location[temp_count++].plausible_color = 125 + 112 + 96;
+	locs.location[temp_count++].plausible_color = 128 + 112 + 94;
+	locs.location[temp_count++].plausible_color = 81 + 78 + 75;
+	locs.location[temp_count++].plausible_color = 106 + 93 + 83;
+	locs.location[temp_count++].plausible_color = 137 + 119 + 99;
+	locs.location[temp_count++].plausible_color = 137 + 118 + 98;
+	locs.location[temp_count++].plausible_color = 145 + 127 + 106;
+	locs.location[temp_count++].plausible_color = 131 + 114 + 94;
+	locs.location[temp_count++].plausible_color = 122 + 110 + 95;
+	locs.location[temp_count++].plausible_color = 135 + 116 + 93;
+	locs.location[temp_count++].plausible_color = 162 + 136 + 106;
+	locs.location[temp_count++].plausible_color = 71 + 73 + 77;
+	locs.location[temp_count++].plausible_color = 137 + 118 + 96;
 
+
+	// checks if our color makes sense. if not, throws this location out by setting its score into the negatives
 	for (int i = 0; i < SAMPLE_COUNTS; i++)
 	{
-
+		if (abs(locs.location[i].average_center_color - locs.location[i].plausible_color) < 50)
+			locs.location[i].agree_score = -1 * SAMPLE_COUNTS;
 	}
+
+	
 
 	// sees who has the most agree-ers
 	const int agree_boundary = 10; // in px, compares centers of detections
@@ -268,6 +298,34 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 		}
 	}
 
+	// finally gets the predicted location of the ball after filtering all the matches and gets the size
+	int best_match = locs.location[0].agree_score;
+	int average_size = -1;
+	int average_count = 1;
+	for (int i = 0; i < SAMPLE_COUNTS; i++)
+	{
+		int cur_val = locs.location[i].agree_score;
+		if (cur_val > best_match)
+		{
+			best_match = i;
+			average_size = locs.location[i].detected_size;
+			average_count = 1;
+		}
+		else if (cur_val == best_match)
+		{
+			average_size += locs.location[i].detected_size;
+			average_count += 1;
+		}
+	}
+	average_size /= average_count;
+
+	// returns this with magic
+	// to revert this in your callee function,
+	//	x == loc[0] % frame.cols
+	//	y == loc[1] - x
+	int return_location_pixel = locs.location[best_match].x_center * locs.location[best_match].y_center;
+
+	cv::Point loc{ return_location_pixel, average_size};
 
 	return loc;
 }
