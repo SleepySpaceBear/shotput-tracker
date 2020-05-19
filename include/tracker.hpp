@@ -19,7 +19,11 @@ public:
 	// finds the shotput in the frame and edits it accordingly
 	void processFrame(cv::Mat& frame);
 
-
+	// getters for stats about the most recent throw
+	double getVelocity();
+	double getReleaseAngle();
+	double getReleaseHeight();
+	double getDistance();
 private:
 	const static int s_shotputSize = 20;
 

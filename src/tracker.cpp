@@ -18,7 +18,21 @@ void Tracker::processFrame(cv::Mat& frame) {
 	}
 }
 
+double Tracker::getVelocity() {
+	return 0.0;
+}
 
+double Tracker::getReleaseAngle() {
+	return 0.0;
+}
+
+double Tracker::getReleaseHeight() {
+	return 0.0;
+}
+
+double Tracker::getDistance() {
+	return 0.0;
+}
 
 cv::Point Tracker::findShotput(cv::Mat& frame) {
 	// get the greyscale frame
@@ -164,6 +178,11 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 				{
 					int x_loc = matchLoc.x - template_image.cols + i,
 						y_loc = matchLoc.y - template_image.rows + j;
+					
+					if (frame.cols <= x_loc || frame.rows <= y_loc) {
+						continue;
+					}
+
 					cv::Vec3b color = frame.at<cv::Vec3b>(cv::Point(x_loc, y_loc));
 					avg_b += color[0];
 					avg_g += color[1];
