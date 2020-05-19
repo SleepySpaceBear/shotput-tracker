@@ -178,10 +178,14 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 				{
 					int x_loc = matchLoc.x - template_image.cols + i,
 						y_loc = matchLoc.y - template_image.rows + j;
-					cv::Vec3b color = frame.at<cv::Vec3b>(cv::Point(x_loc, y_loc));
-					avg_b += color[0];
-					avg_g += color[1];
-					avg_r += color[2];
+
+					if (frame.empty()) {
+						return cv::Point{ -1, -1 };
+					}
+					int color = frame.at<int>(cv::Point(x_loc, y_loc));
+					avg_b += color;
+					avg_g += color;
+					avg_r += color;
 					j += approximation_factor;
 				}
 				i += approximation_factor;
@@ -238,39 +242,41 @@ cv::Point Tracker::findShotput(cv::Mat& frame) {
 
 	//  average color values calculated at https://matkl.github.io/average-color/
 	temp_count = 0;
-	locs.location[temp_count++].plausible_color = 135 + 134 + 117;
-	locs.location[temp_count++].plausible_color = 143 + 123 + 102;
-	locs.location[temp_count++].plausible_color = 189 + 138 + 128;
-	locs.location[temp_count++].plausible_color = 148 + 128 + 104;
-	locs.location[temp_count++].plausible_color = 131 + 114 + 95;
-	locs.location[temp_count++].plausible_color = 131 + 113 + 92;
-	locs.location[temp_count++].plausible_color = 138 + 119 + 96;
-	locs.location[temp_count++].plausible_color = 140 + 119 + 94;
-	locs.location[temp_count++].plausible_color = 161 + 136 + 106;
-	locs.location[temp_count++].plausible_color = 158 + 139 + 117;
-	locs.location[temp_count++].plausible_color = 139 + 120 + 97;
-	locs.location[temp_count++].plausible_color = 125 + 112 + 96;
-	locs.location[temp_count++].plausible_color = 128 + 112 + 94;
-	locs.location[temp_count++].plausible_color = 81 + 78 + 75;
-	locs.location[temp_count++].plausible_color = 106 + 93 + 83;
-	locs.location[temp_count++].plausible_color = 137 + 119 + 99;
-	locs.location[temp_count++].plausible_color = 137 + 118 + 98;
-	locs.location[temp_count++].plausible_color = 145 + 127 + 106;
-	locs.location[temp_count++].plausible_color = 131 + 114 + 94;
-	locs.location[temp_count++].plausible_color = 122 + 110 + 95;
-	locs.location[temp_count++].plausible_color = 135 + 116 + 93;
-	locs.location[temp_count++].plausible_color = 162 + 136 + 106;
-	locs.location[temp_count++].plausible_color = 71 + 73 + 77;
-	locs.location[temp_count++].plausible_color = 137 + 118 + 96;
+	locs.location[temp_count++].plausible_color = { 117, 134, 135 };
+	locs.location[temp_count++].plausible_color = { 102, 123, 143 };
+	locs.location[temp_count++].plausible_color = { 128, 138, 189 };
+	locs.location[temp_count++].plausible_color = { 104, 128, 148 };
+	locs.location[temp_count++].plausible_color = { 95, 114, 131 };
+	locs.location[temp_count++].plausible_color = { 92, 113, 131 };
+	locs.location[temp_count++].plausible_color = { 96, 119, 138 };
+	locs.location[temp_count++].plausible_color = { 94, 119, 140 };
+	locs.location[temp_count++].plausible_color = { 106, 136, 161 };
+	locs.location[temp_count++].plausible_color = { 117, 139, 158 };
+	locs.location[temp_count++].plausible_color = { 97, 120, 139 };
+	locs.location[temp_count++].plausible_color = { 96, 112, 125 };
+	locs.location[temp_count++].plausible_color = { 94, 112, 128 };
+	locs.location[temp_count++].plausible_color = { 75, 78, 81 };
+	locs.location[temp_count++].plausible_color = { 83, 93, 106 };
+	locs.location[temp_count++].plausible_color = { 99, 119, 137 };
+	locs.location[temp_count++].plausible_color = { 98, 118, 137 };
+	locs.location[temp_count++].plausible_color = { 106, 127, 145 };
+	locs.location[temp_count++].plausible_color = { 94, 114, 131 };
+	locs.location[temp_count++].plausible_color = { 95, 110, 122 };
+	locs.location[temp_count++].plausible_color = { 93, 116, 135 };
+	locs.location[temp_count++].plausible_color = { 106, 136, 162 };
+	locs.location[temp_count++].plausible_color = { 77, 73, 71 };
+	locs.location[temp_count++].plausible_color = { 96, 118, 137 };
 
 
 	// checks if our color makes sense. if not, throws this location out by setting its score into the negatives
 	for (int i = 0; i < SAMPLE_COUNTS; i++)
 	{
-		if (abs(locs.location[i].average_center_color - locs.location[i].plausible_color) < 50)
-			locs.location[i].agree_score = -1 * SAMPLE_COUNTS;
+		for (int j = 0; j < 4; j++) {
+			if (abs(locs.location[i].average_center_color[j] - locs.location[i].plausible_color[j]) > 17) {
+				locs.location[i].agree_score = -1 * SAMPLE_COUNTS;
+			}
+		}
 	}
-
 	
 
 	// sees who has the most agree-ers
